@@ -31,12 +31,12 @@ def get_song_count(directory) -> dict[str, list[str]]:
                 logger.warning(f"{path} missing artist or title")
     return songs
 
-def count_songs(songs: dict[str, list[str]]):
+def count_songs(songs: dict[str, list[str]]) -> None:
     logger.info(f"Total unique song names: {len(songs)}")
     sorted_songs = sorted(songs.items(), key=lambda item: len(item[1]), reverse=True)
-    logger.info("Top 5:")
-    for title, artist in sorted_songs[:5]:
-        logger.info(f"- {title} - {artist}")
+    logger.info("Top 20:")
+    for title, artists in sorted_songs[:20]:
+        logger.info(f"- {title} - {len(artists)} {artists}")
 
 
 def main(directory: str):
