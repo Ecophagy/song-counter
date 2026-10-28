@@ -3,5 +3,6 @@ name = "song-counter"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
+    "loguru>=0.7.3",
     "mutagen>=1.48.1",
 ]
