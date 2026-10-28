@@ -38,10 +38,26 @@ def count_songs(songs: dict[str, list[str]]) -> None:
     for title, artists in sorted_songs[:20]:
         logger.info(f"- {title} - {len(artists)} {artists}")
 
+def common_words(songs: dict[str, list[str]]) -> None:
+    logger.info(f"Most common words in song names")
+    words = {}
+    for title, _ in songs.items():
+        for word in title.split():
+            word = word.lower()
+            if word not in words:
+                words[word] = 1
+            else:
+                words[word] += 1
+    sorted_words = sorted(words.items(), key=lambda item: item[1], reverse=True)
+    for word, count in sorted_words[:50]:
+        logger.info(f"- {word} - {count}")
+
+
 
 def main(directory: str):
     songs = get_song_count(directory)
     count_songs(songs)
+    common_words(songs)
 
 
 
