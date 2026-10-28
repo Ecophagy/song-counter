@@ -1,16 +1,45 @@
-# This is a sample Python script.
+import os
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from loguru import logger
+import mutagen
+
+TITLE = "title"
+ARTIST = "artist"
+
+extensions = ('mp3', 'wav', 'm4a', 'flac')
+
+def get_song_count(directory) -> dict[str, list[str]]:
+    songs: dict[str, list[str]] = {}
+
+    for path, directories, files in os.walk(directory):
+        for filename in files:
+            if filename.endswith(extensions):
+                file = mutagen.File(os.path.join(path, filename))
+                try:
+                    title = file[TITLE][0]
+                    artist = file[ARTIST][0]
+
+                    if title not in songs.keys():
+                        songs[title] = [artist]
+                    else:
+                        songs[title].append(artist)
+                except KeyError:
+                    logger.warning(f"{filename} missing artist or title")
+    return songs
+
+def analyse_songs(songs: dict[str, list[str]]):
+    logger.info(f"Total unique song names: {len(songs)}")
+    sorted_songs = sorted(songs.items(), key=lambda item: len(item[1]), reverse=True)
+    logger.info("Top 5:")
+    for title, artist in sorted_songs[:5]:
+        logger.info(f"- {title} - {artist}")
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main(directory: str):
+    songs = get_song_count(directory)
+    analyse_songs(songs)
 
 
-# Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main("TODO")
