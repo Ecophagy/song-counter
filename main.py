@@ -18,7 +18,7 @@ def get_song_count(directory) -> dict[str, list[str]]:
 
     for path in tqdm(file_paths):
         if path.endswith(extensions):
-            file = mutagen.File(path)
+            file = mutagen.File(path, easy=True)
             try:
                 title = file[TITLE][0]
                 artist = file[ARTIST][0]
@@ -28,7 +28,7 @@ def get_song_count(directory) -> dict[str, list[str]]:
                 else:
                     songs[title].append(artist)
             except KeyError:
-                logger.warning(f"{filename} missing artist or title")
+                logger.warning(f"{path} missing artist or title")
     return songs
 
 def analyse_songs(songs: dict[str, list[str]]):
