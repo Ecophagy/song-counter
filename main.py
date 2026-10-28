@@ -31,7 +31,7 @@ def get_song_count(directory) -> dict[str, list[str]]:
                 logger.warning(f"{path} missing artist or title")
     return songs
 
-def analyse_songs(songs: dict[str, list[str]]):
+def count_songs(songs: dict[str, list[str]]):
     logger.info(f"Total unique song names: {len(songs)}")
     sorted_songs = sorted(songs.items(), key=lambda item: len(item[1]), reverse=True)
     logger.info("Top 5:")
@@ -41,7 +41,7 @@ def analyse_songs(songs: dict[str, list[str]]):
 
 def main(directory: str):
     songs = get_song_count(directory)
-    analyse_songs(songs)
+    count_songs(songs)
 
 
 
